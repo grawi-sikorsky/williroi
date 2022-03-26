@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,8 +12,7 @@ import pl.sikor.williroi.model.account.AccountModel;
 @Service
 public class AccountService {
 
-    @Value("${pl.sikor.api.string}")
-    private String apiAddress;
+    private String apiAddress = "https://api.helium.io/v1/";
     
     public AccountModel getAccountFromAPI(){
         
@@ -38,4 +36,6 @@ public class AccountService {
         
         return account;
     }
+
+    public getHotspotsFromApi
 }
