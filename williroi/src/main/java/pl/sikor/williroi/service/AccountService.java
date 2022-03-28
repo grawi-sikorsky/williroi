@@ -10,6 +10,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,6 +23,8 @@ import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
 
 @Service
 public class AccountService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
     private String apiAddress = "https://api.helium.io/v1/";
     
@@ -66,7 +70,12 @@ public class AccountService {
             //List<Hotspot> hotspotsArray = new ArrayList<Hotspot>(Arrays.asList(hotspots));
             //accHot = mapper.readValue(rawJson, new TypeReference<List<Hotspot>>(){});
             //hotspotsArray.forEach(System.out::println);
-            listhotspot = mapper.readValue(rawJson, new TypeReference<List<Hotspot>>(){});
+            //listhotspot = mapper.reader().forType(new TypeReference<List<Hotspot>>(){}).withRootName("data").readValue(rawJson);
+            //listhotspot.forEach(System.out::println);
+            hotspots = mapper.reader().forType(Hotspot[].class).withRootName("data").readValue(rawJson);
+            for (Hotspot hotspot : hotspots) {
+                logger.info(hotspot.address);
+            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
