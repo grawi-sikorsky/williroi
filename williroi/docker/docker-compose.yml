@@ -9,4 +9,9 @@ services:
       - "3307:3306"
     environment:
       MYSQL_NAME: williroi
+      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: mysqlpass
+      MYSQL_DATABASE: williroi_db
+      MYSQL_USER: williroi
+      MYSQL_PASSWORD: williroipass
+
