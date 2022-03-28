@@ -74,7 +74,12 @@ public class AccountService {
             //listhotspot.forEach(System.out::println);
             hotspots = mapper.reader().forType(Hotspot[].class).withRootName("data").readValue(rawJson);
             for (Hotspot hotspot : hotspots) {
+                System.out.println("\033[0;33m" + "==========");
                 logger.info(hotspot.address);
+                logger.info(hotspot.location);
+                logger.info(hotspot.elevation.toString());
+                logger.info(hotspot.gain.toString());
+                System.out.println("\033[0m" + "==========");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();

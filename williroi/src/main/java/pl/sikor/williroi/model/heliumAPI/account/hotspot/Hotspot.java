@@ -32,8 +32,8 @@ public class Hotspot {
     public int last_poc_challenge;
     public int last_change_block;
     //public Geocode geocode;
-    public int gain;
-    public int elevation;
+    public Integer gain;
+    public Integer elevation;
     public int block_added;
     public int block;
     public String address;
