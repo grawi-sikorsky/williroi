@@ -1,4 +1,4 @@
-package pl.sikor.williroi.model.account;
+package pl.sikor.williroi.model.heliumAPI.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

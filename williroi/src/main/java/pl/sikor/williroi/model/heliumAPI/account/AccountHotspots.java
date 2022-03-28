@@ -1,8 +1,8 @@
-package pl.sikor.williroi.model.account;
+package pl.sikor.williroi.model.heliumAPI.account;
 
 import java.util.ArrayList;
 
-import pl.sikor.williroi.model.account.hotspot.Hotspot;
+import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
 
 public class AccountHotspots{
     public ArrayList<Hotspot> data;

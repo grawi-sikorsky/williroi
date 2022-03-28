@@ -1,5 +1,9 @@
 package pl.sikor.williroi.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import pl.sikor.williroi.model.account.AccountModel;
+import pl.sikor.williroi.model.heliumAPI.account.AccountModel;
+import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
+
+// account 12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9
 
 @Service
 public class AccountService {
@@ -31,11 +38,33 @@ public class AccountService {
         }
 
         System.out.println("ACCOUNT DETAILS: ");
-        System.out.println(account.balance);
+        System.out.println("Account balance [DC]: " + account.balance);
+        Double hntbal;
+        hntbal = Double.valueOf(account.balance) / 100000000;
+        System.out.println("Account balance [HNT]: " + hntbal);
         System.out.println();
         
         return account;
     }
 
-    public getHotspotsFromApi
+    public void getAccountHotspotsFromApi(String accountID){
+        RestTemplate restTemplate = new RestTemplate();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+
+        String rawJson = restTemplate.getForObject(apiAddress + "/accounts/" + accountID + "/hotspots", String.class);
+        Hotspot[] hotspots;
+
+        try {
+            hotspots = mapper.readValue(rawJson, Hotspot[].class);
+            List<Hotspot> hotspotsArray = new ArrayList<Hotspot>(Arrays.asList(hotspots));
+            hotspotsArray.forEach(System.out::println);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        
+
+    }
 }

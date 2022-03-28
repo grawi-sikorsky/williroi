@@ -1,9 +1,25 @@
-package pl.sikor.williroi.model.account.hotspot;
+package pl.sikor.williroi.model.heliumAPI.account.hotspot;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName(value = "data")
 public class Hotspot {
+    // pola wlasne
+    public String price;
+    public String roi;
+    public String roi_days_left;
+    public String roi_days_past;
+
+    public String rewards_24;
+    public String rewards_7d;
+    public String rewards_30d;
+
+    // pola z API
     public double lng;
     public double lat;
-    //public Date timestamp_added;
+    public Date timestamp_added;
     //public Status status;
     public double reward_scale;
     public String payer;
