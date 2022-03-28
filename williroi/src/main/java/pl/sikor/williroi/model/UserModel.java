@@ -25,9 +25,9 @@ public class UserModel{
 
     private String username;
     private String password;
-    private String apiAccountHash;
+    private String hntAccount;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private AccountModel apiAccount;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -53,11 +53,11 @@ public class UserModel{
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getApiAccountHash() {
-        return apiAccountHash;
+    public String getHntAccount() {
+        return hntAccount;
     }
-    public void setApiAccountHash(String apiAccountHash) {
-        this.apiAccountHash = apiAccountHash;
+    public void setHntAccount(String hntAccount) {
+        this.hntAccount = hntAccount;
     }
     public AccountModel getApiAccount() {
         return apiAccount;

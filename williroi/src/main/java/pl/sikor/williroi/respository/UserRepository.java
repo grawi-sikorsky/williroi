@@ -9,4 +9,5 @@ import pl.sikor.williroi.model.UserModel;
 public interface UserRepository extends CrudRepository<UserModel,Long> {
     
     UserModel findByUsername(String username);
+    UserModel findByApiAccountHash(String apiAccountHash);
 }

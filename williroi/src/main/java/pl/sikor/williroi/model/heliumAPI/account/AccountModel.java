@@ -15,6 +15,9 @@ public class AccountModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+    private String password;
+
     public int validator_count;
     public int staked_balance;
     public int speculative_sec_nonce;

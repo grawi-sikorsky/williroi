@@ -21,7 +21,7 @@ public class AccountController {
 
     @GetMapping("/")
     public void staradupa() {
-        accountService.getAccountFromAPI();
+        accountService.getAccountFromAPI("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
         hotspotService.getHotspotFromApi("1126G1HMj1zM9WbDPfXxeheFUU6HG4ffFh7c97sHWvaS5ahRTSTM");
         accountService.getAccountHotspotsFromApi("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,14 +36,14 @@ public class AccountService {
         this.userRepository = userRepository;
     }
 
-    public AccountModel getAccountFromAPI(){
+    public AccountModel getAccountFromAPI(String helium_account_address){
         
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 
-        String rawJson = restTemplate.getForObject(apiAddress+"accounts/12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9", String.class);
+        String rawJson = restTemplate.getForObject(apiAddress+"accounts/"+ helium_account_address, String.class);
         AccountModel account = new AccountModel();
 
         try {
@@ -59,7 +62,7 @@ public class AccountService {
         return account;
     }
 
-    public void getAccountHotspotsFromApi(String accountID){
+    public List<Hotspot> getAccountHotspotsFromApi(String accountID) throws RuntimeException {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -87,10 +90,12 @@ public class AccountService {
                 logger.info(hotspot.gain.toString());
                 System.out.println("\033[0m" + "==========");
             }
+            return listhotspot;
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }       
+        }
 
+        throw new RuntimeException();
     }
 }
