@@ -1,12 +1,20 @@
 package pl.sikor.williroi.model.heliumAPI.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 @JsonRootName(value = "data")
+@Entity
 public class AccountModel {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     public int validator_count;
     public int staked_balance;
     public int speculative_sec_nonce;
@@ -18,9 +26,6 @@ public class AccountModel {
     public int dc_nonce;
     public int dc_balance;
     public int block;
-    @JsonProperty("balance")
     public int balance;
     public String address;
-
-    ObjectMapper aa = new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 }

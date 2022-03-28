@@ -2,11 +2,23 @@ package pl.sikor.williroi.model.heliumAPI.account.hotspot;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "data")
+@Entity
 public class Hotspot {
+    
     // pola wlasne
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long userId;
+
     public String price;
     public String roi;
     public String roi_days_left;
@@ -37,4 +49,7 @@ public class Hotspot {
     public int block_added;
     public int block;
     public String address;
+
+
+
 }
