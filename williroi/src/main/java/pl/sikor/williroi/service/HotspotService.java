@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
 
 // 11n56PhWsutCeLSubUiyyrzfT8absNarNWNkAcEjL4csyUB3Nqa cricket
+// 1126G1HMj1zM9WbDPfXxeheFUU6HG4ffFh7c97sHWvaS5ahRTSTM - bobcat
 
 @Service
 public class HotspotService {
@@ -22,7 +23,7 @@ public class HotspotService {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 
-        String rawJson = restTemplate.getForObject(apiAddress + "/hotspots/" + hotspotID, String.class);
+        String rawJson = restTemplate.getForObject(apiAddress + "hotspots/" + hotspotID, String.class);
         Hotspot hotspot = new Hotspot();
 
         try {

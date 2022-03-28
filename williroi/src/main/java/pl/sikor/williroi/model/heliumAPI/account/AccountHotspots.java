@@ -2,8 +2,11 @@ package pl.sikor.williroi.model.heliumAPI.account;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
 import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
 
+@JsonRootName(value = "data")
 public class AccountHotspots{
     public ArrayList<Hotspot> data;
 }

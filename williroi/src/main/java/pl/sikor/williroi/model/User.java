@@ -10,11 +10,11 @@ import javax.persistence.Id;
 import pl.sikor.williroi.model.heliumAPI.account.AccountModel;
 import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
 
-@Entity
+// @Entity
 public class User {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String username;
     String password;
