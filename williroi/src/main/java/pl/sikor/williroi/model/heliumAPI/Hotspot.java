@@ -1,4 +1,4 @@
-package pl.sikor.williroi.model.heliumAPI.account.hotspot;
+package pl.sikor.williroi.model.heliumAPI;
 
 import java.util.Date;
 

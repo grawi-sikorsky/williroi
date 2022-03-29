@@ -22,9 +22,9 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "{hntAccount}")
-    public void getUserData(@PathVariable String hntAccount){
-        userService.getUser(hntAccount);
+    @GetMapping(value = "{username}")
+    public UserModel getUserData(@PathVariable String username){
+        return userService.getUser(username);
     }
 
     @PostMapping

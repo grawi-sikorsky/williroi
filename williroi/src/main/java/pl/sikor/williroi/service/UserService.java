@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.respository.UserRepository;
+import pl.sikor.williroi.service.heliumAPI.ApiService;
 
 @Service
 public class UserService {
-    
+    private final ApiService apiService;
     private final AccountService accountService;
     private final HotspotService hotspotService;
     private final UserRepository userRepository;
@@ -17,7 +18,8 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     
     /* CONSTRUCTOR */
-    public UserService(AccountService accountService, HotspotService hotspotService, UserRepository userRepository) {
+    public UserService(ApiService apiService, AccountService accountService, HotspotService hotspotService, UserRepository userRepository) {
+        this.apiService = apiService;
         this.userRepository = userRepository;
         this.accountService = accountService;
         this.hotspotService = hotspotService;
@@ -60,7 +62,21 @@ public class UserService {
         if(userRepository.findByUsername(userModel.getUsername()) != null){
             UserModel user = userRepository.findByUsername(userModel.getUsername());
             user.setHntAccount(userModel.getHntAccount());
-            user.setApiAccount(accountService.getAccountFromAPI(userModel.getHntAccount()));
+            user.setApiAccount(apiService.getAccountFromAPI(userModel.getHntAccount()));
+            userRepository.save(user);
+            return user;
+        } else {
+            logger.error("USER DOESNT EXISTS..");
+            throw new RuntimeException();
+        }
+    }
+
+    /* ADD USER HOTSPOTS FROM ACCOUNT */
+    public UserModel addHeliumHotspots(UserModel userModel){
+
+        if(userRepository.findByUsername(userModel.getUsername()) != null){
+            UserModel user = userRepository.findByUsername(userModel.getUsername());
+            user.setHotspots(apiService.getAccountHotspotsFromApi(user.getHntAccount()));
             userRepository.save(user);
             return user;
         } else {
@@ -73,7 +89,7 @@ public class UserService {
 
 
     public void getUserDataFromAPI() throws RuntimeException {
-        accountService.getAccountFromAPI("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
-        accountService.getAccountHotspotsFromApi("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
+        apiService.getAccountFromAPI("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
+        apiService.getAccountHotspotsFromApi("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
     }
 }

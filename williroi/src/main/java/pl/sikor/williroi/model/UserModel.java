@@ -13,8 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import pl.sikor.williroi.model.heliumAPI.account.AccountModel;
-import pl.sikor.williroi.model.heliumAPI.account.hotspot.Hotspot;
+import pl.sikor.williroi.model.heliumAPI.AccountModel;
+import pl.sikor.williroi.model.heliumAPI.Hotspot;
 
 @Entity
 public class UserModel{
@@ -27,10 +27,10 @@ public class UserModel{
     private String password;
     private String hntAccount;
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
     private AccountModel apiAccount;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private List<Hotspot> hotspots;
 

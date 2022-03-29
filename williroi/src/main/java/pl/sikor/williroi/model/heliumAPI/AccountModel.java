@@ -1,4 +1,4 @@
-package pl.sikor.williroi.model.heliumAPI.account;
+package pl.sikor.williroi.model.heliumAPI;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
