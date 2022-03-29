@@ -118,8 +118,11 @@ public class ApiService {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 
-        String url = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-1%20day&bucket=day";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
+        String url24 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-1%20day&bucket=day";
+        String url7 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-7%20day&bucket=week";
+        String url30 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-30%20day&bucket=week";
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url24);
         URI uri = builder.build(true).toUri();
 
         JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
