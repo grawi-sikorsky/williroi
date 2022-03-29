@@ -1,12 +1,14 @@
 package pl.sikor.williroi.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.service.UserService;
 
 @RestController
@@ -20,13 +22,18 @@ public class UserController {
     }
 
 
-    @GetMapping
-    public void getUserData(){
-        userService
+    @GetMapping(value = "{hntAccount}")
+    public void getUserData(@PathVariable String hntAccount){
+        userService.getUser(hntAccount);
     }
 
-    @PostMapping(value = "{heliuum_account_address}")
-    public void addUser(@PathVariable String heliuum_account_address) {
-        userService.addNewUser(heliuum_account_address);
+    @PostMapping
+    public void addUser(@RequestBody UserModel userModel) {
+        userService.addNewUser(userModel);
+    }
+
+    @PatchMapping
+    public UserModel patchUser(@RequestBody UserModel userModel){
+        return userService.addHeliumAccount(userModel);
     }
 }

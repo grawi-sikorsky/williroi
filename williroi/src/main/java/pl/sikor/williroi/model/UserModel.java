@@ -35,6 +35,26 @@ public class UserModel{
     private List<Hotspot> hotspots;
 
 
+    public UserModel() {
+    }
+
+    public UserModel(UserModel user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.hntAccount = user.getHntAccount();
+    }
+
+    public UserModel toEntity() {
+        UserModel user = new UserModel();
+
+        user.setUsername(this.username);
+        user.setPassword(this.password);
+        user.setHntAccount(this.hntAccount);
+
+        return user;
+    }
+
+
     public Long getId() {
         return id;
     }

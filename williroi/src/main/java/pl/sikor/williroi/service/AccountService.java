@@ -1,10 +1,6 @@
 package pl.sikor.williroi.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.management.RuntimeErrorException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +30,9 @@ public class AccountService {
     public AccountService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    
+
 
     public AccountModel getAccountFromAPI(String helium_account_address){
         

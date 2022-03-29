@@ -2,7 +2,6 @@ package pl.sikor.williroi.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import pl.sikor.williroi.model.UserModel;
@@ -25,15 +24,15 @@ public class UserService {
     }
 
 
-
     /* ADD USER METHOD */
-    public UserModel addNewUser(String helium_account_address) throws RuntimeException{
-        if(userRepository.findByApiAccountHash(helium_account_address) == null){
+    public UserModel addNewUser(UserModel userModel) throws RuntimeException{
+        if(userRepository.findByUsername(userModel.getUsername()) == null){
 
-            UserModel user = new UserModel();
-            user.setApiAccount(accountService.getAccountFromAPI(helium_account_address));
-            user.setHntAccount(helium_account_address);
-            user.setHotspots(accountService.getAccountHotspotsFromApi(helium_account_address));
+            UserModel user = new UserModel(userModel);
+
+            // user.setHntAccount(userModel.getHntAccount());
+            // user.setApiAccount(accountService.getAccountFromAPI(hntAccount));
+            // user.setHotspots(accountService.getAccountHotspotsFromApi(hntAccount));
 
             userRepository.save(user);
             return user;
@@ -45,14 +44,32 @@ public class UserService {
     }
 
     /* GET USER METHOD */
-    public UserModel getUser(String accountID) throws RuntimeException{
-        if(userRepository.findByUsername(accountID) != null){
-            return userRepository.findByUsername(accountID);
+    public UserModel getUser(String username) throws RuntimeException{
+        if(userRepository.findByUsername(username) != null){
+            return userRepository.findByUsername(username);
         } else {
             logger.error("USER DOESNT EXISTS..");
             throw new RuntimeException();
         }
     }
+
+
+    /* ADD USER HELIUM ACCOUNT */
+    public UserModel addHeliumAccount(UserModel userModel){
+
+        if(userRepository.findByUsername(userModel.getUsername()) != null){
+            UserModel user = userRepository.findByUsername(userModel.getUsername());
+            user.setHntAccount(userModel.getHntAccount());
+            user.setApiAccount(accountService.getAccountFromAPI(userModel.getHntAccount()));
+            userRepository.save(user);
+            return user;
+        } else {
+            logger.error("USER DOESNT EXISTS..");
+            throw new RuntimeException();
+        }
+    }
+
+
 
 
     public void getUserDataFromAPI() throws RuntimeException {
