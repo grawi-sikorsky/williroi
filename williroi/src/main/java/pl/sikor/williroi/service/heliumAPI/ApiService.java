@@ -89,11 +89,11 @@ public class ApiService {
                 getHotspotRewardsFromAPI(hotspot);
 
                 System.out.println("\033[0;33m" + "==========");
-                logger.info(hotspot.address);
-                logger.info(hotspot.location);
-                logger.info(hotspot.elevation.toString());
-                logger.info(hotspot.gain.toString());
-                logger.info(hotspot.rewards_24);
+                logger.info(hotspot.getAddress());
+                logger.info(hotspot.getLocation());
+                logger.info(hotspot.getElevation().toString());
+                logger.info(hotspot.getGain().toString());
+                logger.info(hotspot.getRewards_24());
                 System.out.println("\033[0m" + "==========");
             }
             userRepository.save(user);
@@ -118,7 +118,7 @@ public class ApiService {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 
-        String url = apiAddress + "hotspots/" + inputHotspot.address + "/rewards/sum?min_time=-1%20day&bucket=day";
+        String url = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-1%20day&bucket=day";
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
         URI uri = builder.build(true).toUri();
 
@@ -127,7 +127,7 @@ public class ApiService {
 
         String total = jsonnode.get("data").get(0).get("total").asText();
 
-        inputHotspot.rewards_24 = total;
+        inputHotspot.setRewards_24(total);
 
         return inputHotspot;
     }

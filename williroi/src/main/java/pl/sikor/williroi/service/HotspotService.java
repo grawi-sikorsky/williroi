@@ -42,14 +42,14 @@ public class HotspotService {
             {
                 for (Hotspot hotspot : user.getHotspots()) {
                     System.out.println("HOTSPOT DETAILS: ");
-                    System.out.println(hotspot.address);
-                    System.out.println(hotspot.elevation);
-                    System.out.println(hotspot.gain);
-                    System.out.println(hotspot.location);
-                    System.out.println(hotspot.name);
-                    System.out.println(hotspot.owner);
-                    System.out.println(hotspot.reward_scale);
-                    System.out.println(hotspot.rewards_24);
+                    System.out.println(hotspot.getAddress());
+                    System.out.println(hotspot.getElevation());
+                    System.out.println(hotspot.getGain());
+                    System.out.println(hotspot.getLocation());
+                    System.out.println(hotspot.getName());
+                    System.out.println(hotspot.getOwner());
+                    System.out.println(hotspot.getReward_scale());
+                    System.out.println(hotspot.getRewards_24());
                 }
             }
             else
@@ -61,7 +61,7 @@ public class HotspotService {
 
         } else {
             logger.error("USER DONT EXISTS..");
-            throw new RuntimeException();
+            throw new RuntimeException("USER DONT EXISTS..");
         }
     }
 
@@ -72,20 +72,19 @@ public class HotspotService {
             userRepository.findByUsername(username) != null) {
 
             Hotspot hotspot = hotspotRepository.findHotspotByAddress(incomingHotspot.getAddress());
-            hotspot.price = incomingHotspot.getPrice();
+            hotspot.setPrice(incomingHotspot.getPrice());
 
             hotspotRepository.save(hotspot);
 
             System.out.println("HOTSPOT DETAILS: ");
-            System.out.println(hotspot.name);
-            System.out.println(hotspot.address);
-            System.out.println(hotspot.elevation);
-            System.out.println(hotspot.gain);
-            System.out.println(hotspot.location);
-            System.out.println(hotspot.reward_scale);
-            System.out.println(hotspot.rewards_24);
-
-
+            System.out.println(hotspot.getAddress());
+            System.out.println(hotspot.getElevation());
+            System.out.println(hotspot.getGain());
+            System.out.println(hotspot.getLocation());
+            System.out.println(hotspot.getName());
+            System.out.println(hotspot.getOwner());
+            System.out.println(hotspot.getReward_scale());
+            System.out.println(hotspot.getRewards_24());
 
             return hotspot;
 

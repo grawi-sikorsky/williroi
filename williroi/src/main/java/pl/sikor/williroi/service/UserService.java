@@ -55,7 +55,6 @@ public class UserService {
         }
     }
 
-
     /* ADD USER HELIUM ACCOUNT */
     public UserModel addHeliumAccount(UserModel userModel){
 
