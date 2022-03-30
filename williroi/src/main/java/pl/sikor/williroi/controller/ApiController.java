@@ -35,6 +35,11 @@ public class ApiController {
         return apiService.getAccountFromAPI(username);
     }
 
+    @GetMapping("/accountrewards")
+    public AccountModel getAccountRewardsromApi(@PathVariable String username){
+        return apiService.getAccountRewardsFromAPI(username);
+    }
+
     @GetMapping("/rewards")
     public List<Hotspot> getHotspotsRewardsFromApi(@PathVariable String username){
         return apiService.getAllHotspotsRewards(new UserModel());

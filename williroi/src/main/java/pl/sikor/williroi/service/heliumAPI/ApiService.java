@@ -1,6 +1,7 @@
 package pl.sikor.williroi.service.heliumAPI;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -58,6 +59,51 @@ public class ApiService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
+        userRepository.save(user);
+        logger.info("ACCOUNT FETCHED FROM API!!");
+
+        return user.getApiAccount();
+    }
+
+    /* GET ACCOUNT REWARDS FROM API */
+    public AccountModel getAccountRewardsFromAPI(String username) {
+        UserModel user = new UserModel();
+
+        if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
+            user = userRepository.findByUsername(username);
+        }else{
+            throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
+        }
+
+        RestTemplate restTemplate = new RestTemplate();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+
+        String[] urls = {   apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1%20day&bucket=day",
+                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-7%20day&bucket=week",
+                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-30%20day",
+                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1000%20day"
+                        };
+
+        List<String> totals = new ArrayList<String>();
+
+        String url24 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1%20day&bucket=day";
+        String url7 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-7%20day&bucket=week";
+        String url30 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-30%20day";
+        String urlLifetime = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1000%20day";
+
+        
+        for (int i=0; i < urls.length; ++i) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(urls[i]);
+            URI uri = builder.build(true).toUri();
+
+            JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
+            totals.add(jsonnode.get("data").get(0).get("total").asText());
+            logger.warn(totals.get(i).toString());
+        }
+        //user.getApiAccount().setAcc_reward24(totals.get(0));
 
         userRepository.save(user);
         logger.info("ACCOUNT FETCHED FROM API!!");
