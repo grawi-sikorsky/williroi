@@ -60,6 +60,7 @@ public class ApiService {
         }
 
         userRepository.save(user);
+        logger.info("ACCOUNT FETCHED FROM API!!");
 
         return user.getApiAccount();
     }
@@ -67,10 +68,10 @@ public class ApiService {
     /* GET ACCOUNT HOTSPOTS FROM API */
     public List<Hotspot> getAccountHotspotsFromApi(String username) {
         UserModel user = new UserModel();
-        List<HotspotDTO> hotspotdto;
+
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
             user = userRepository.findByUsername(username);
-            hotspotdto = user.getHotspots();
+            //hotspotdto = user.getHotspots();
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
         }

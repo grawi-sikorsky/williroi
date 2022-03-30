@@ -47,7 +47,7 @@ public class UserService {
 
     /* GET USER METHOD */
     public UserModel getUser(String username) throws RuntimeException{
-        if(userRepository.findByUsername(username) != null){
+        if(userRepository.findByUsername(username) != null){ System.out.println("GET USER");
             return userRepository.findByUsername(username);
         } else {
             logger.error("USER DOESNT EXISTS..");
