@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import pl.sikor.williroi.model.HotspotDTO;
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.model.heliumAPI.AccountModel;
 import pl.sikor.williroi.model.heliumAPI.Hotspot;
@@ -66,9 +67,10 @@ public class ApiService {
     /* GET ACCOUNT HOTSPOTS FROM API */
     public List<Hotspot> getAccountHotspotsFromApi(String username) {
         UserModel user = new UserModel();
-
+        List<HotspotDTO> hotspotdto;
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
             user = userRepository.findByUsername(username);
+            hotspotdto = user.getHotspots();
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
         }
@@ -96,6 +98,7 @@ public class ApiService {
                 logger.info(hotspot.getRewards_24());
                 System.out.println("\033[0m" + "==========");
             }
+
             userRepository.save(user);
             return user.getHotspots();
 
