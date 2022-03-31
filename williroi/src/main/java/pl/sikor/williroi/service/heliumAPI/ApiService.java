@@ -110,7 +110,7 @@ public class ApiService {
     }
 
     /* GET ACCOUNT HOTSPOTS FROM API */
-    public List<HotspotDTO> getAccountHotspotsFromApi(String username) {
+    public List<Hotspot> getAccountHotspotsFromApi(String username) {
 
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
             UserModel user = userRepository.findByUsername(username);
@@ -123,20 +123,20 @@ public class ApiService {
             String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class);
     
             try {
-                user.getHotspots().clear();
+                //user.getHotspots().clear();
                 user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
     
                 for (Hotspot hotspot : user.getHotspots()) {
     
-                    getHotspotRewardsFromAPI(hotspot);
+                    //getHotspotRewardsFromAPI(hotspot);
     
                     System.out.println("\033[0;33m" + "==========");
                     logger.info(hotspot.getName());
                     logger.info(hotspot.getElevation().toString());
                     logger.info(hotspot.getGain().toString());
-                    logger.info(hotspot.getRewards_24());
-                    logger.info(hotspot.getRewards_7d());
-                    logger.info(hotspot.getRewards_30d());
+                    // logger.info(hotspot.getHotspotDto().getRewards_24());
+                    // logger.info(hotspot.getHotspotDto().getRewards_7d());
+                    // logger.info(hotspot.getHotspotDto().getRewards_30d());
                     System.out.println("\033[0m" + "==========");
                 }
     
@@ -179,10 +179,10 @@ public class ApiService {
             totals.add(jsonnode.get("data").get("total").asText());
             logger.warn(totals.get(i).toString());
         }
-        inputHotspot.setRewards_24(totals.get(0));
-        inputHotspot.setRewards_7d(totals.get(1));
-        inputHotspot.setRewards_30d(totals.get(2));
-        inputHotspot.setRewards_lifetime(totals.get(3));
+        inputHotspot.getHotspotDto().setRewards_24(totals.get(0));
+        inputHotspot.getHotspotDto().setRewards_7d(totals.get(1));
+        inputHotspot.getHotspotDto().setRewards_30d(totals.get(2));
+        inputHotspot.getHotspotDto().setRewards_lifetime(totals.get(3));
 
         return inputHotspot;
     }

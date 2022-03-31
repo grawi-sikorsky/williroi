@@ -36,7 +36,7 @@ public class UserModel{
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    private List<HotspotDTO> hotspots;
+    private List<Hotspot> hotspots;
 
 
     public UserModel() {
@@ -90,11 +90,11 @@ public class UserModel{
         this.apiAccount = apiAccount;
     }
 
-    public List<HotspotDTO> getHotspots() {
+    public List<Hotspot> getHotspots() {
         return hotspots;
     }
 
-    public void setHotspots(List<HotspotDTO> hotspots) {
+    public void setHotspots(List<Hotspot> hotspots) {
         this.hotspots = hotspots;
     }
 

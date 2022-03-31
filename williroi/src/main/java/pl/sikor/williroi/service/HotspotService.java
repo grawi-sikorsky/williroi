@@ -28,23 +28,22 @@ public class HotspotService {
     }
 
     /* GET USER HOTSPOTS FROM DB */
-    public List<HotspotDTO> getUserHotspots(String username){        
+    public List<Hotspot> getUserHotspots(String username){        
         if(userRepository.findByUsername(username) != null){
 
             UserModel user = userRepository.findByUsername(username);
             
             if(user.getHotspots() != null)
             {
-                for (HotspotDTO hotspot : user.getHotspots()) {
+                for (Hotspot hotspot : user.getHotspots()) {
                     System.out.println("HOTSPOT DETAILS: ");
-                    System.out.println(hotspot.getApiHotspot().getAddress());
-                    System.out.println(hotspot.getApiHotspot().getElevation());
-                    System.out.println(hotspot.getApiHotspot().getGain());
-                    System.out.println(hotspot.getApiHotspot().getLocation());
-                    System.out.println(hotspot.getApiHotspot().getName());
-                    System.out.println(hotspot.getApiHotspot().getOwner());
-                    System.out.println(hotspot.getApiHotspot().getReward_scale());
-                    System.out.println(hotspot.getApiHotspot().getRewards_24());
+                    System.out.println(hotspot.getAddress());
+                    System.out.println(hotspot.getElevation());
+                    System.out.println(hotspot.getGain());
+                    System.out.println(hotspot.getLocation());
+                    System.out.println(hotspot.getName());
+                    System.out.println(hotspot.getOwner());
+                    System.out.println(hotspot.getReward_scale());
                 }
             }
             else
@@ -67,7 +66,7 @@ public class HotspotService {
             userRepository.findByUsername(username) != null) {
 
             Hotspot hotspot = hotspotRepository.findHotspotByAddress(incomingHotspot.getAddress());
-            hotspot.setPrice(incomingHotspot.getPrice());
+            hotspot.getHotspotDto().setPrice(incomingHotspot.getPrice());
 
             hotspotRepository.save(hotspot);
 
@@ -79,7 +78,6 @@ public class HotspotService {
             System.out.println(hotspot.getName());
             System.out.println(hotspot.getOwner());
             System.out.println(hotspot.getReward_scale());
-            System.out.println(hotspot.getRewards_24());
 
             return hotspot;
 
