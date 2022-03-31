@@ -1,6 +1,5 @@
 package pl.sikor.williroi.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,12 +26,17 @@ public class UserModel{
     private String password;
     private String hntAccount;
 
+    private String acc_reward24;
+    private String acc_reward7d;
+    private String acc_reward30d;
+    private String acc_reward_lifetime;
+
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
     private AccountModel apiAccount;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    private List<Hotspot> hotspots;
+    private List<HotspotDTO> hotspots;
 
 
     public UserModel() {
@@ -85,11 +89,45 @@ public class UserModel{
     public void setApiAccount(AccountModel apiAccount) {
         this.apiAccount = apiAccount;
     }
-    public List<Hotspot> getHotspots() {
+
+    public List<HotspotDTO> getHotspots() {
         return hotspots;
     }
-    public void setHotspots(List<Hotspot> hotspots) {
+
+    public void setHotspots(List<HotspotDTO> hotspots) {
         this.hotspots = hotspots;
+    }
+
+    public String getAcc_reward24() {
+        return acc_reward24;
+    }
+
+    public void setAcc_reward24(String acc_reward24) {
+        this.acc_reward24 = acc_reward24;
+    }
+
+    public String getAcc_reward7d() {
+        return acc_reward7d;
+    }
+
+    public void setAcc_reward7d(String acc_reward7d) {
+        this.acc_reward7d = acc_reward7d;
+    }
+
+    public String getAcc_reward30d() {
+        return acc_reward30d;
+    }
+
+    public void setAcc_reward30d(String acc_reward30d) {
+        this.acc_reward30d = acc_reward30d;
+    }
+
+    public String getAcc_reward_lifetime() {
+        return acc_reward_lifetime;
+    }
+
+    public void setAcc_reward_lifetime(String acc_reward_lifetime) {
+        this.acc_reward_lifetime = acc_reward_lifetime;
     }
 
     

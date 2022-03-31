@@ -15,11 +15,6 @@ public class AccountModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String acc_reward24;
-    private String acc_reward7d;
-    private String acc_reward30d;
-    private String acc_reward_lifetime;
-
     private int validator_count;
     private int staked_balance;
     private int speculative_sec_nonce;
@@ -119,31 +114,5 @@ public class AccountModel {
     public void setAddress(String address) {
         this.address = address;
     }
-    public String getAcc_reward24() {
-        return acc_reward24;
-    }
-    public void setAcc_reward24(String acc_reward24) {
-        this.acc_reward24 = acc_reward24;
-    }
-    public String getAcc_reward7d() {
-        return acc_reward7d;
-    }
-    public void setAcc_reward7d(String acc_reward7d) {
-        this.acc_reward7d = acc_reward7d;
-    }
-    public String getAcc_reward30d() {
-        return acc_reward30d;
-    }
-    public void setAcc_reward30d(String acc_reward30d) {
-        this.acc_reward30d = acc_reward30d;
-    }
-    public String getAcc_reward_lifetime() {
-        return acc_reward_lifetime;
-    }
-    public void setAcc_reward_lifetime(String acc_reward_lifetime) {
-        this.acc_reward_lifetime = acc_reward_lifetime;
-    }
-
-
     
 }

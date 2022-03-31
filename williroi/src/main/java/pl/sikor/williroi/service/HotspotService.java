@@ -2,20 +2,15 @@ package pl.sikor.williroi.service;
 
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import pl.sikor.williroi.model.HotspotDTO;
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.model.heliumAPI.Hotspot;
-import pl.sikor.williroi.respository.UserRepository;
 import pl.sikor.williroi.respository.HotspotRepository;
+import pl.sikor.williroi.respository.UserRepository;
 
 // 11n56PhWsutCeLSubUiyyrzfT8absNarNWNkAcEjL4csyUB3Nqa cricket
 // 1126G1HMj1zM9WbDPfXxeheFUU6HG4ffFh7c97sHWvaS5ahRTSTM - bobcat
@@ -33,23 +28,23 @@ public class HotspotService {
     }
 
     /* GET USER HOTSPOTS FROM DB */
-    public List<Hotspot> getUserHotspots(String username){        
+    public List<HotspotDTO> getUserHotspots(String username){        
         if(userRepository.findByUsername(username) != null){
 
             UserModel user = userRepository.findByUsername(username);
             
             if(user.getHotspots() != null)
             {
-                for (Hotspot hotspot : user.getHotspots()) {
+                for (HotspotDTO hotspot : user.getHotspots()) {
                     System.out.println("HOTSPOT DETAILS: ");
-                    System.out.println(hotspot.getAddress());
-                    System.out.println(hotspot.getElevation());
-                    System.out.println(hotspot.getGain());
-                    System.out.println(hotspot.getLocation());
-                    System.out.println(hotspot.getName());
-                    System.out.println(hotspot.getOwner());
-                    System.out.println(hotspot.getReward_scale());
-                    System.out.println(hotspot.getRewards_24());
+                    System.out.println(hotspot.getApiHotspot().getAddress());
+                    System.out.println(hotspot.getApiHotspot().getElevation());
+                    System.out.println(hotspot.getApiHotspot().getGain());
+                    System.out.println(hotspot.getApiHotspot().getLocation());
+                    System.out.println(hotspot.getApiHotspot().getName());
+                    System.out.println(hotspot.getApiHotspot().getOwner());
+                    System.out.println(hotspot.getApiHotspot().getReward_scale());
+                    System.out.println(hotspot.getApiHotspot().getRewards_24());
                 }
             }
             else

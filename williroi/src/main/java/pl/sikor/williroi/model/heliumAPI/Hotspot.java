@@ -27,6 +27,7 @@ public class Hotspot {
     private String rewards_24;
     private String rewards_7d;
     private String rewards_30d;
+    private String rewards_lifetime;
 
     // pola z API
     private double lng;
@@ -212,6 +213,12 @@ public class Hotspot {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+    public String getRewards_lifetime() {
+        return rewards_lifetime;
+    }
+    public void setRewards_lifetime(String rewards_lifetime) {
+        this.rewards_lifetime = rewards_lifetime;
     }
 
 

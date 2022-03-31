@@ -1,5 +1,6 @@
 package pl.sikor.williroi.model;
 
+import pl.sikor.williroi.model.heliumAPI.Hotspot;
 
 public class HotspotDTO{
 
@@ -11,6 +12,9 @@ public class HotspotDTO{
     private String rewards_24;
     private String rewards_7d;
     private String rewards_30d;
+    private String rewards_lifetime;
+
+    private Hotspot apiHotspot;
 
     public String getAddress() {
         return address;
@@ -57,4 +61,18 @@ public class HotspotDTO{
     public void setRewards_30d(String rewards_30d) {
         this.rewards_30d = rewards_30d;
     }
+    public String getRewards_lifetime() {
+        return rewards_lifetime;
+    }
+    public void setRewards_lifetime(String rewards_lifetime) {
+        this.rewards_lifetime = rewards_lifetime;
+    }
+    public Hotspot getApiHotspot() {
+        return apiHotspot;
+    }
+    public void setApiHotspot(Hotspot apiHotspot) {
+        this.apiHotspot = apiHotspot;
+    }
+    
+    
 }

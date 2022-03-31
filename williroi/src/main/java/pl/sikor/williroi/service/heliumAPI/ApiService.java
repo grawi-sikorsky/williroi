@@ -39,122 +39,117 @@ public class ApiService {
 
     /* GET ACCOUNT FROM API */
     public AccountModel getAccountFromAPI(String username) {
-        UserModel user = new UserModel();
 
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
-            user = userRepository.findByUsername(username);
+            UserModel user = userRepository.findByUsername(username);
+
+            RestTemplate restTemplate = new RestTemplate();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+
+            String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount(), String.class);
+
+            try {
+                user.setApiAccount(mapper.readValue(rawJson, AccountModel.class));
+                //user.getApiAccount().setBalance(user.getApiAccount().getBalance()/100000000); // DC to HNT divide
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+    
+            userRepository.save(user);
+            logger.info("ACCOUNT FETCHED FROM API!!");
+
+            return user.getApiAccount();
+
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
-        }
-
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
-
-        String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount(), String.class);
-
-        try {
-            user.setApiAccount(mapper.readValue(rawJson, AccountModel.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        userRepository.save(user);
-        logger.info("ACCOUNT FETCHED FROM API!!");
-
-        return user.getApiAccount();
+        }        
     }
 
     /* GET ACCOUNT REWARDS FROM API */
     public AccountModel getAccountRewardsFromAPI(String username) {
-        UserModel user = new UserModel();
 
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
-            user = userRepository.findByUsername(username);
+            UserModel user = userRepository.findByUsername(username);
+
+            RestTemplate restTemplate = new RestTemplate();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    
+            String[] urls = {   apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1%20day",
+                                apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-7%20day",
+                                apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-30%20day",
+                                apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-2000%20day"
+                            };
+    
+            List<String> totals = new ArrayList<String>();
+            
+            for (int i=0; i < urls.length; ++i) {
+                UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(urls[i]);
+                URI uri = builder.build(true).toUri();
+    
+                JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
+                totals.add(jsonnode.get("data").get("total").asText());
+                logger.warn(totals.get(i).toString());
+            }
+            user.setAcc_reward24(totals.get(0));
+            user.setAcc_reward7d(totals.get(1));
+            user.setAcc_reward30d(totals.get(2));
+            user.setAcc_reward_lifetime(totals.get(3));
+    
+            userRepository.save(user);
+            logger.info("ACCOUNT FETCHED FROM API!!");
+    
+            return user.getApiAccount();
+
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
         }
-
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
-
-        String[] urls = {   apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1%20day&bucket=day",
-                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-7%20day&bucket=week",
-                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-30%20day",
-                            apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1000%20day"
-                        };
-
-        List<String> totals = new ArrayList<String>();
-
-        String url24 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1%20day&bucket=day";
-        String url7 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-7%20day&bucket=week";
-        String url30 = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-30%20day";
-        String urlLifetime = apiAddress + "accounts/" + user.getHntAccount() + "/rewards/sum?min_time=-1000%20day";
-
-        
-        for (int i=0; i < urls.length; ++i) {
-            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(urls[i]);
-            URI uri = builder.build(true).toUri();
-
-            JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
-            totals.add(jsonnode.get("data").get(0).get("total").asText());
-            logger.warn(totals.get(i).toString());
-        }
-        //user.getApiAccount().setAcc_reward24(totals.get(0));
-
-        userRepository.save(user);
-        logger.info("ACCOUNT FETCHED FROM API!!");
-
-        return user.getApiAccount();
     }
 
     /* GET ACCOUNT HOTSPOTS FROM API */
-    public List<Hotspot> getAccountHotspotsFromApi(String username) {
-        UserModel user = new UserModel();
+    public List<HotspotDTO> getAccountHotspotsFromApi(String username) {
 
         if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
-            user = userRepository.findByUsername(username);
-            //hotspotdto = user.getHotspots();
-        }else{
-            throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
-        }
+            UserModel user = userRepository.findByUsername(username);
 
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
-
-        String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class);
-
-        try {
-            user.getHotspots().clear();
-            user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
-
-            for (Hotspot hotspot : user.getHotspots()) {
-
-                getHotspotRewardsFromAPI(hotspot);
-
-                System.out.println("\033[0;33m" + "==========");
-                logger.info(hotspot.getAddress());
-                logger.info(hotspot.getLocation());
-                logger.info(hotspot.getElevation().toString());
-                logger.info(hotspot.getGain().toString());
-                logger.info(hotspot.getRewards_24());
-                System.out.println("\033[0m" + "==========");
+            RestTemplate restTemplate = new RestTemplate();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    
+            String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class);
+    
+            try {
+                user.getHotspots().clear();
+                user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
+    
+                for (Hotspot hotspot : user.getHotspots()) {
+    
+                    getHotspotRewardsFromAPI(hotspot);
+    
+                    System.out.println("\033[0;33m" + "==========");
+                    logger.info(hotspot.getName());
+                    logger.info(hotspot.getElevation().toString());
+                    logger.info(hotspot.getGain().toString());
+                    logger.info(hotspot.getRewards_24());
+                    logger.info(hotspot.getRewards_7d());
+                    logger.info(hotspot.getRewards_30d());
+                    System.out.println("\033[0m" + "==========");
+                }
+    
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
-
+    
             userRepository.save(user);
             return user.getHotspots();
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        }else{
+            throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
         }
-
-        userRepository.save(user);
-        return user.getHotspots();
     }
 
     /* GET HOTSPOT REWARDS */
@@ -168,22 +163,38 @@ public class ApiService {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 
-        String url24 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-1%20day&bucket=day";
-        String url7 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-7%20day&bucket=week";
-        String url30 = apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-30%20day&bucket=week";
+        String[] urls = {   apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-1%20day",
+                            apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-7%20day",
+                            apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-30%20day",
+                            apiAddress + "hotspots/" + inputHotspot.getAddress() + "/rewards/sum?min_time=-2000%20day"
+        };
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url24);
-        URI uri = builder.build(true).toUri();
+        List<String> totals = new ArrayList<String>();
+            
+        for (int i=0; i < urls.length; ++i) {
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(urls[i]);
+            URI uri = builder.build(true).toUri();
 
-        JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
-        String json = restTemplate.getForObject(uri, String.class);
-
-        String total = jsonnode.get("data").get(0).get("total").asText();
-
-        inputHotspot.setRewards_24(total);
+            JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
+            totals.add(jsonnode.get("data").get("total").asText());
+            logger.warn(totals.get(i).toString());
+        }
+        inputHotspot.setRewards_24(totals.get(0));
+        inputHotspot.setRewards_7d(totals.get(1));
+        inputHotspot.setRewards_30d(totals.get(2));
+        inputHotspot.setRewards_lifetime(totals.get(3));
 
         return inputHotspot;
     }
+
+
+    public Hotspot calculateHotspotROI(Hotspot _hotspot){
+
+        //if()
+
+        return _hotspot;
+    }
+
 
     /* GET ALL HOTSPOT REWARDS */
     public List<Hotspot> getAllHotspotsRewards(UserModel user){
