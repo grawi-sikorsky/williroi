@@ -1,5 +1,6 @@
 package pl.sikor.williroi.service.heliumAPI;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,6 @@ public class ApiService {
 
             try {
                 user.setApiAccount(mapper.readValue(rawJson, AccountModel.class));
-                //user.getApiAccount().setBalance(user.getApiAccount().getBalance()/100000000); // DC to HNT divide
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -118,52 +118,30 @@ public class ApiService {
             RestTemplate restTemplate = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
-    
-            String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class); // old
+            //mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true); // musi byc off dla readerforupdating bla bla bla, inaczej: Unexpected token (START_ARRAY), expected START_OBJECT: Current token not START_OBJECT 
+
             JsonNode jsonnode = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", JsonNode.class);
 
-
             for (int i=0; i < jsonnode.get("data").size(); ++i) {
-
-                if(user.getHotspots().get(i). != null){
-                    System.out.println("tadaaa");
+                // jesli i jest wieksze lub rowne to element listy nie istnieje
+                if(i < user.getHotspots().size()){
+                    if(user.getHotspots().get(i).getAddress().equals(jsonnode.get("data").get(i).get("address").asText()))
+                    {
+                        try{
+                            mapper.readerForUpdating(user.getHotspots().get(i)).readValue(jsonnode.get("data").get(i), Hotspot.class);
+                            getHotspotRewardsFromAPI(user.getHotspots().get(i));
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                //user.getHotspots().get(i).  //.set(i, mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
-
-                if(user.getHotspots().contains(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class)))
-                {
-                    user.getHotspots().set(i, mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
-                }
-                else
-                {
+                else{
                     user.getHotspots().add(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
                 }
-
             }
 
-            // try {
-            //     //user.getHotspots().clear();
-            //     user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
-    
-            //     for (Hotspot hotspot : user.getHotspots()) {
-    
-            //         //getHotspotRewardsFromAPI(hotspot);
-    
-            //         System.out.println("\033[0;33m" + "==========");
-            //         logger.info(hotspot.getName());
-            //         logger.info(hotspot.getElevation().toString());
-            //         logger.info(hotspot.getGain().toString());
-            //         // logger.info(hotspot.getHotspotDto().getRewards_24());
-            //         // logger.info(hotspot.getHotspotDto().getRewards_7d());
-            //         // logger.info(hotspot.getHotspotDto().getRewards_30d());
-            //         System.out.println("\033[0m" + "==========");
-            //     }
-    
-            // } catch (JsonProcessingException e) {
-            //     e.printStackTrace();
-            // }
-    
+            
+
             userRepository.save(user);
             return user.getHotspots();
 
@@ -199,10 +177,10 @@ public class ApiService {
             totals.add(jsonnode.get("data").get("total").asText());
             logger.warn(totals.get(i).toString());
         }
-        inputHotspot.getHotspotDto().setRewards_24(totals.get(0));
-        inputHotspot.getHotspotDto().setRewards_7d(totals.get(1));
-        inputHotspot.getHotspotDto().setRewards_30d(totals.get(2));
-        inputHotspot.getHotspotDto().setRewards_lifetime(totals.get(3));
+        inputHotspot.setRewards_24(totals.get(0));
+        inputHotspot.setRewards_7d(totals.get(1));
+        inputHotspot.setRewards_30d(totals.get(2));
+        inputHotspot.setRewards_lifetime(totals.get(3));
 
         return inputHotspot;
     }

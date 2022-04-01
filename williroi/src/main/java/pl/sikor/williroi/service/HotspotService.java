@@ -66,7 +66,7 @@ public class HotspotService {
             userRepository.findByUsername(username) != null) {
 
             Hotspot hotspot = hotspotRepository.findHotspotByAddress(incomingHotspot.getAddress());
-            hotspot.getHotspotDto().setPrice(incomingHotspot.getPrice());
+            hotspot.setPrice(incomingHotspot.getPrice());
 
             hotspotRepository.save(hotspot);
 
