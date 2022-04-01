@@ -13,7 +13,7 @@ import pl.sikor.williroi.model.heliumAPI.AccountModel;
 import pl.sikor.williroi.model.heliumAPI.Hotspot;
 import pl.sikor.williroi.service.heliumAPI.ApiService;
 
-@CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080"})
+@CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080", "https://williroi.herokuapp.com/"})
 @RestController
 @RequestMapping("/user/{username}/api")
 public class ApiController {

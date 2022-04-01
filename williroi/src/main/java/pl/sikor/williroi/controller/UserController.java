@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.service.UserService;
 
-@CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080"})
+@CrossOrigin(origins = {"http://localhost:4200","http://10.0.2.2:8080", "https://williroi.herokuapp.com/"})
 @RestController
 @RequestMapping("/user")
 public class UserController {
