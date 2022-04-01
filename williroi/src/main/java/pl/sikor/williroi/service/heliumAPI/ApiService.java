@@ -188,7 +188,7 @@ public class ApiService {
 
     public Hotspot calculateHotspotROI(Hotspot _hotspot){
 
-        //if()
+        //_hotspot.setRoi(_hotspot.getPrice() / _hotspot.getRewards_24());
 
         return _hotspot;
     }
