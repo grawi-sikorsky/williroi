@@ -120,29 +120,49 @@ public class ApiService {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
     
-            String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class);
-    
-            try {
-                //user.getHotspots().clear();
-                user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
-    
-                for (Hotspot hotspot : user.getHotspots()) {
-    
-                    //getHotspotRewardsFromAPI(hotspot);
-    
-                    System.out.println("\033[0;33m" + "==========");
-                    logger.info(hotspot.getName());
-                    logger.info(hotspot.getElevation().toString());
-                    logger.info(hotspot.getGain().toString());
-                    // logger.info(hotspot.getHotspotDto().getRewards_24());
-                    // logger.info(hotspot.getHotspotDto().getRewards_7d());
-                    // logger.info(hotspot.getHotspotDto().getRewards_30d());
-                    System.out.println("\033[0m" + "==========");
+            String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", String.class); // old
+            JsonNode jsonnode = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount() + "/hotspots", JsonNode.class);
+
+
+            for (int i=0; i < jsonnode.get("data").size(); ++i) {
+
+                if(user.getHotspots().get(i). != null){
+                    System.out.println("tadaaa");
                 }
-    
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                //user.getHotspots().get(i).  //.set(i, mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
+
+                if(user.getHotspots().contains(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class)))
+                {
+                    user.getHotspots().set(i, mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
+                }
+                else
+                {
+                    user.getHotspots().add(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
+                }
+
             }
+
+            // try {
+            //     //user.getHotspots().clear();
+            //     user.getHotspots().addAll( mapper.reader().forType(new TypeReference<List<Hotspot>>() {}).withRootName("data").readValue(rawJson) );
+    
+            //     for (Hotspot hotspot : user.getHotspots()) {
+    
+            //         //getHotspotRewardsFromAPI(hotspot);
+    
+            //         System.out.println("\033[0;33m" + "==========");
+            //         logger.info(hotspot.getName());
+            //         logger.info(hotspot.getElevation().toString());
+            //         logger.info(hotspot.getGain().toString());
+            //         // logger.info(hotspot.getHotspotDto().getRewards_24());
+            //         // logger.info(hotspot.getHotspotDto().getRewards_7d());
+            //         // logger.info(hotspot.getHotspotDto().getRewards_30d());
+            //         System.out.println("\033[0m" + "==========");
+            //     }
+    
+            // } catch (JsonProcessingException e) {
+            //     e.printStackTrace();
+            // }
     
             userRepository.save(user);
             return user.getHotspots();
