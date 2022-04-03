@@ -100,7 +100,7 @@ public class ApiService {
             user.setAcc_reward_lifetime(totals.get(3));
     
             userRepository.save(user);
-            logger.info("ACCOUNT FETCHED FROM API!!");
+            logger.info("ACCOUNT REWARDS FETCHED FROM API!!");
     
             return user.getApiAccount();
 
@@ -139,8 +139,6 @@ public class ApiService {
                     user.getHotspots().add(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
                 }
             }
-
-            
 
             userRepository.save(user);
             return user.getHotspots();
@@ -181,6 +179,7 @@ public class ApiService {
         inputHotspot.setRewards_7d(totals.get(1));
         inputHotspot.setRewards_30d(totals.get(2));
         inputHotspot.setRewards_lifetime(totals.get(3));
+        logger.info("HOTSPOTS REWARDS FETCHED FROM API!!");
 
         return inputHotspot;
     }
