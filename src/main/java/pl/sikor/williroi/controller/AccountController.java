@@ -3,12 +3,9 @@ package pl.sikor.williroi.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.service.AccountService;
 import pl.sikor.williroi.service.HotspotService;
 import pl.sikor.williroi.service.heliumAPI.ApiService;

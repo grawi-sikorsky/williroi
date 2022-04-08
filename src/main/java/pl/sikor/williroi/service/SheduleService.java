@@ -19,24 +19,13 @@ public class SheduleService {
         this.apiService = apiService;
     }
 
-    @Scheduled(cron = "0/20 * * * * *")
+    @Scheduled(fixedDelay = 60000*5)
     public void scheduled(){
-        logger.info("=====>>>>>Use cron  {}",System.currentTimeMillis());
-        //apiService.getAccountRewardsFromAPI("kloc");
+        apiService.getAccountRewardsFromAPI("kloc");
         //logger.info("getAccountRewardsFromAPI() done?",System.currentTimeMillis());
-        //apiService.getAccountFromAPI("kloc");
+        apiService.getAccountFromAPI("kloc");
         //logger.info("getAccountFromAPI() done?",System.currentTimeMillis());
-        //apiService.getAllHotspotsRewards("kloc");
         apiService.getAccountHotspotsFromApi("kloc");
     }
- 
-    @Scheduled(fixedRate = 15000)
-    public void scheduled1() {
-        logger.info("=====>>>>>Use fixedRate{}", System.currentTimeMillis());
-    }
- 
-    @Scheduled(fixedDelay = 15000)
-    public void scheduled2() {
-        logger.info("=====>>>>>fixedDelay{}",System.currentTimeMillis());
-    }
+
 }
