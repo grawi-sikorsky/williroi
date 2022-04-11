@@ -19,7 +19,7 @@ public class SheduleService {
         this.apiService = apiService;
     }
 
-    @Scheduled(fixedDelay = 60000*5)
+    @Scheduled(fixedDelay = 60000*10)
     public void scheduled(){
         apiService.getAccountRewardsFromAPI("kloc");
         //logger.info("getAccountRewardsFromAPI() done?",System.currentTimeMillis());

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -138,6 +139,12 @@ public class ApiService {
                 else{
                     user.getHotspots().add(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
                 }
+
+                try{
+                    Thread.sleep(600);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
             }
 
             userRepository.save(user);
@@ -174,6 +181,12 @@ public class ApiService {
             JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
             totals.add(jsonnode.get("data").get("total").asText());
             logger.warn(totals.get(i).toString());
+            try{
+                Thread.sleep(600);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
+            
         }
         inputHotspot.setRewards_24(totals.get(0));
         inputHotspot.setRewards_7d(totals.get(1));
