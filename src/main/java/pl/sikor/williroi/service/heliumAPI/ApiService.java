@@ -125,15 +125,15 @@ public class ApiService {
             for (int i=0; i < jsonnode.get("data").size(); ++i) {
                 // jesli i jest wieksze lub rowne to element listy nie istnieje
                 if(i < user.getHotspots().size()){
-                    if(user.getHotspots().get(i).getAddress().equals(jsonnode.get("data").get(i).get("address").asText()))
-                    {
+                    // if(user.getHotspots().get(i).getAddress().equals(jsonnode.get("data").get(i).get("address").asText()))
+                    // {
                         try{
                             mapper.readerForUpdating(user.getHotspots().get(i)).readValue(jsonnode.get("data").get(i), Hotspot.class);
                             getHotspotRewardsFromAPI(user.getHotspots().get(i));
                         }catch (IOException e){
                             e.printStackTrace();
                         }
-                    }
+                    // }
                 }
                 else{
                     user.getHotspots().add(mapper.convertValue(jsonnode.get("data").get(i), Hotspot.class));
