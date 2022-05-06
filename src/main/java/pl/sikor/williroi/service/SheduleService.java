@@ -22,8 +22,10 @@ public class SheduleService {
     @Scheduled(fixedDelay = 60000*10)
     public void scheduled(){
         apiService.getAccountRewardsFromAPI("kloc");
+        
         //logger.info("getAccountRewardsFromAPI() done?",System.currentTimeMillis());
         apiService.getAccountFromAPI("kloc");
+
         //logger.info("getAccountFromAPI() done?",System.currentTimeMillis());
         apiService.getAccountHotspotsFromApi("kloc");
     }

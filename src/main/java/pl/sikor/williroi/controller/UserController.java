@@ -1,5 +1,7 @@
 package pl.sikor.williroi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,15 +25,14 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping(value = "{username}")
-    public UserModel getUserData(@PathVariable String username){
-        return userService.getUser(username);
+    public ResponseEntity<UserModel> getUserData(@PathVariable String username){
+        return ResponseEntity.status(HttpStatus.OK).body( userService.getUser(username) );
     }
 
     @PostMapping
-    public void addUser(@RequestBody UserModel userModel) {
-        userService.addNewUser(userModel);
+    public ResponseEntity<UserModel> addUser(@RequestBody UserModel userModel) {
+        return ResponseEntity.status(HttpStatus.CREATED).body( userService.addNewUser(userModel) );
     }
 
     @PatchMapping

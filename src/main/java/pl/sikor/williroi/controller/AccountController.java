@@ -1,11 +1,14 @@
 package pl.sikor.williroi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.sikor.williroi.model.heliumAPI.AccountModel;
 import pl.sikor.williroi.service.AccountService;
 import pl.sikor.williroi.service.HotspotService;
 import pl.sikor.williroi.service.heliumAPI.ApiService;
@@ -26,9 +29,9 @@ public class AccountController {
     }
 
     @GetMapping("/{hntaddress}")
-    public void getHeliumAccount(@PathVariable String username, @PathVariable String hntaddress) {
-        apiService.getAccountFromAPI(hntaddress);
-        apiService.getAccountHotspotsFromApi(hntaddress);
+    public ResponseEntity<AccountModel> getHeliumAccount(@PathVariable String username, @PathVariable String hntaddress) {
+        return ResponseEntity.status(HttpStatus.OK).body( apiService.getAccountFromAPI(hntaddress) );
+        //apiService.getAccountHotspotsFromApi(hntaddress);
     }
 
     @GetMapping("/a")

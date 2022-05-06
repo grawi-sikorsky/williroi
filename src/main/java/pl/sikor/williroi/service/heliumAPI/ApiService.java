@@ -94,6 +94,12 @@ public class ApiService {
                 JsonNode jsonnode = restTemplate.getForObject(uri, JsonNode.class);
                 totals.add(jsonnode.get("data").get("total").asText());
                 logger.warn(totals.get(i).toString());
+
+                try{
+                    Thread.sleep(900);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
             }
             user.setAcc_reward24(totals.get(0));
             user.setAcc_reward7d(totals.get(1));
@@ -141,7 +147,7 @@ public class ApiService {
                 }
 
                 try{
-                    Thread.sleep(600);
+                    Thread.sleep(900);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
@@ -182,7 +188,7 @@ public class ApiService {
             totals.add(jsonnode.get("data").get("total").asText());
             logger.warn(totals.get(i).toString());
             try{
-                Thread.sleep(600);
+                Thread.sleep(700);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }

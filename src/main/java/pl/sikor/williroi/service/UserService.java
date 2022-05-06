@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import pl.sikor.williroi.exceptions.User.UserDoesntExistException;
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.respository.UserRepository;
 import pl.sikor.williroi.service.heliumAPI.ApiService;
@@ -32,26 +33,22 @@ public class UserService {
 
             UserModel user = new UserModel(userModel);
 
-            // user.setHntAccount(userModel.getHntAccount());
-            // user.setApiAccount(accountService.getAccountFromAPI(hntAccount));
-            // user.setHotspots(accountService.getAccountHotspotsFromApi(hntAccount));
-
             userRepository.save(user);
             return user;
 
         } else {
             logger.error("USER EXISTS..");
-            throw new RuntimeException();
+            throw new UserDoesntExistException("USER ALREADY EXISTS..");
         }
     }
 
     /* GET USER METHOD */
-    public UserModel getUser(String username) throws RuntimeException{
+    public UserModel getUser(String username) throws UserDoesntExistException{
         if(userRepository.findByUsername(username) != null){ System.out.println("GET USER");
             return userRepository.findByUsername(username);
         } else {
             logger.error("USER DOESNT EXISTS..");
-            throw new RuntimeException();
+            throw new UserDoesntExistException("USER DOESNT EXISTS..");
         }
     }
 
@@ -66,7 +63,7 @@ public class UserService {
             return user;
         } else {
             logger.error("USER DOESNT EXISTS..");
-            throw new RuntimeException();
+            throw new UserDoesntExistException("USER DOESNT EXISTS..");
         }
     }
 
@@ -80,7 +77,7 @@ public class UserService {
             return user;
         } else {
             logger.error("USER DOESNT EXISTS..");
-            throw new RuntimeException();
+            throw new UserDoesntExistException("USER DOESNT EXISTS..");
         }
     }
 
