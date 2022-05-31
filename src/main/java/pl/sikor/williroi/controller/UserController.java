@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PatchMapping
-    public UserModel patchUser(@RequestBody UserModel userModel){
-        return userService.addHeliumAccount(userModel);
+    public ResponseEntity<UserModel> patchUser(@RequestBody UserModel userModel){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.addHeliumAccount(userModel));
     }
 }

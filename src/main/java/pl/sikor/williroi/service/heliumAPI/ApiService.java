@@ -65,7 +65,7 @@ public class ApiService {
 
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
-        }        
+        }
     }
 
     /* GET ACCOUNT REWARDS FROM API */
@@ -147,7 +147,7 @@ public class ApiService {
                 }
 
                 try{
-                    Thread.sleep(900);
+                    Thread.sleep(700);
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
@@ -188,7 +188,7 @@ public class ApiService {
             totals.add(jsonnode.get("data").get("total").asText());
             logger.warn(totals.get(i).toString());
             try{
-                Thread.sleep(700);
+                Thread.sleep(400);
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
