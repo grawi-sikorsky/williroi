@@ -32,10 +32,9 @@ public class UserService {
         if(userRepository.findByUsername(userModel.getUsername()) == null){
 
             UserModel user = new UserModel(userModel);
-
             userRepository.save(user);
+            
             return user;
-
         } else {
             logger.error("USER EXISTS..");
             throw new UserDoesntExistException("USER ALREADY EXISTS..");
