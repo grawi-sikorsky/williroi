@@ -40,10 +40,10 @@ public class ApiService {
 
 
     /* GET ACCOUNT FROM API */
-    public AccountModel getAccountFromAPI(String username) {
+    public AccountModel getAccountFromAPI(String hntAccount) {
 
-        if(userRepository.findByUsername(username) != null && userRepository.findByUsername(username).getHntAccount() != null){
-            UserModel user = userRepository.findByUsername(username);
+        if(userRepository.findByHntAccount(hntAccount) != null){
+            UserModel user = userRepository.findByHntAccount(hntAccount);
 
             RestTemplate restTemplate = new RestTemplate();
             ObjectMapper mapper = new ObjectMapper();
@@ -53,7 +53,7 @@ public class ApiService {
             String rawJson = restTemplate.getForObject(apiAddress + "accounts/" + user.getHntAccount(), String.class);
 
             try {
-                user.setApiAccount(mapper.readValue(rawJson, AccountModel.class));
+                user.setAccountModel(mapper.readValue(rawJson, AccountModel.class));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -61,7 +61,7 @@ public class ApiService {
             userRepository.save(user);
             logger.info("ACCOUNT FETCHED FROM API!!");
 
-            return user.getApiAccount();
+            return user.getAccountModel();
 
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");
@@ -109,7 +109,7 @@ public class ApiService {
             userRepository.save(user);
             logger.info("ACCOUNT REWARDS FETCHED FROM API!!");
     
-            return user.getApiAccount();
+            return user.getAccountModel();
 
         }else{
             throw new RuntimeException("NO SUCH USER, OR NO API ACCOUNT ASIGNED!");

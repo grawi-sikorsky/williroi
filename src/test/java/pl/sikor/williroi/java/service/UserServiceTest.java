@@ -1,4 +1,4 @@
-package pl.sikor.williroi.service;
+package pl.sikor.williroi.java.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -13,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import pl.sikor.williroi.model.UserModel;
 import pl.sikor.williroi.respository.UserRepository;
+import pl.sikor.williroi.service.UserService;
+import pl.sikor.williroi.service.heliumAPI.ApiService;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -20,16 +22,19 @@ public class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    ApiService apiService;
+
     @InjectMocks
     UserService userService;
-    
+
     @Test
-    void addNewUser_should_AddUser(){
-        //given
+    void addNewUser_should_AddUser() {
+        // given
         UserModel testuser = new UserModel();
         testuser.setUsername("testuser");
 
-        //when
+        // when
         when(userRepository.findByUsername(testuser.getUsername())).thenReturn(null);
 
         UserModel responseUser = userService.addNewUser(testuser);
@@ -37,7 +42,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void getUser_should_returnUser(){
+    void getUser_should_returnUser() {
         UserModel testuser = new UserModel();
         testuser.setUsername("testuser");
 
@@ -47,8 +52,29 @@ public class UserServiceTest {
     }
 
     @Test
-    void addHeliumAccount_should_addAccount(){
-        
+    void addHeliumAccount_should_addAccount() {
+        UserModel testuser = new UserModel();
+
+        testuser.setUsername("testuser");
+        testuser.setHntAccount("testaccount");
+
+        when(userRepository.findByUsername(testuser.getUsername())).thenReturn(testuser);
+        UserModel responseUser = userService.addHeliumAccount(testuser);
+
+        verify(userRepository, times(1)).save(responseUser);
+        assertEquals(responseUser.getHntAccount(), testuser.getHntAccount());
     }
 
+    @Test
+    void addHeliumHotspots_should_woooork() {
+        // given
+        UserModel testuser = new UserModel();
+        testuser.setUsername("testuser");
+
+        // when
+        when(userRepository.findByUsername(testuser.getUsername())).thenReturn(testuser);
+
+        UserModel responseUser = userService.addHeliumHotspots(testuser);
+        verify(userRepository, times(1)).save(responseUser);
+    }
 }

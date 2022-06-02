@@ -22,11 +22,11 @@ public class SheduleService {
     @Scheduled(fixedDelay = 60000*10)
     public void scheduled(){
         apiService.getAccountRewardsFromAPI("kloc");
-        
-        //logger.info("getAccountRewardsFromAPI() done?",System.currentTimeMillis());
-        apiService.getAccountFromAPI("kloc");
 
-        //logger.info("getAccountFromAPI() done?",System.currentTimeMillis());
+        apiService.getAccountFromAPI("12zQHwN4HkZX1f7Noznkc759rfFDkNefMR8gek9MTd8j4y7ftX9");
+    }
+    @Scheduled(fixedDelay = 60000*3)
+    public void hotspotShedule(){
         apiService.getAccountHotspotsFromApi("kloc");
     }
 

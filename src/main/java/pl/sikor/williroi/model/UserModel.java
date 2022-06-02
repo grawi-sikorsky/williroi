@@ -32,7 +32,7 @@ public class UserModel{
     private String acc_reward_lifetime;
 
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
-    private AccountModel apiAccount;
+    private AccountModel accountModel;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -83,11 +83,11 @@ public class UserModel{
     public void setHntAccount(String hntAccount) {
         this.hntAccount = hntAccount;
     }
-    public AccountModel getApiAccount() {
-        return apiAccount;
+    public AccountModel getAccountModel() {
+        return accountModel;
     }
-    public void setApiAccount(AccountModel apiAccount) {
-        this.apiAccount = apiAccount;
+    public void setAccountModel(AccountModel accountModel) {
+        this.accountModel = accountModel;
     }
 
     public List<Hotspot> getHotspots() {
