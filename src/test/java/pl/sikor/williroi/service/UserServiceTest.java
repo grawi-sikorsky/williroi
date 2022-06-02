@@ -1,4 +1,4 @@
-package pl.sikor.williroi.java.service;
+package pl.sikor.williroi.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
