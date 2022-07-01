@@ -14,4 +14,3 @@ services:
       MYSQL_DATABASE: williroi_db
       MYSQL_USER: williroi
       MYSQL_PASSWORD: williroipass
-
